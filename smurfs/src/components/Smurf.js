@@ -6,19 +6,24 @@ import { getSmurfs, addSmurf, deleteSmurf } from '../actions'
 
 const Smurf = props => {
     const { smurfId } = useParams();
+    const [character, setCharacter] = useState({})
+
+    console.log('SMURF ID IS ', smurfId)
 
     useEffect(() => {
         // const smurfId = id;
         if(!props.characters) {
             props.getSmurfs();
         } else {
-            const smurf = props.characters.filter(c => c.id === smurfId)
-            setCharacter(smurf)
+            const smurf = props.characters.filter(c => c.id == smurfId)
+            console.log('****', props.characters, smurf)
+            setCharacter(smurf[0])
         }   
-    }, [props.characters])
+    }, [props.characters, smurfId])
+
+    console.log('&&&', character);
 
     const [editing, setEditing] = useState(false)
-    const [character, setCharacter] = useState({})
     const [name, setName] = useState('');
     const [height, setHeight] = useState('')
     const [age, setAge] = useState()
@@ -38,6 +43,9 @@ const Smurf = props => {
     const handleEdit = e => {
         e.preventDefault();
         setEditing(true);
+        setName(character.name)
+        setAge(character.age)
+        setHeight(character.height)
     }
     const handleSubmit = e => {
         console.log(name, age, height);
@@ -52,7 +60,7 @@ const Smurf = props => {
 
     const handleDelete = e => {
         e.preventDefault();
-        props.deleteSmurf(character)
+        props.deleteSmurf(character);
     }
     return (
         <div className='smurf-container'>

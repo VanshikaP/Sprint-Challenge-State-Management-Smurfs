@@ -13,7 +13,8 @@ export const reducer = (state=initialState, action) => {
             return {
                 ...state,
                 isPosting: true,
-                characterChanged: action.payload
+                characterChanged: action.payload,
+                characters: [...state.characters, action.payload]
             }
         case 'POSTING_SMURF_SUCCESS':
             return {
@@ -36,7 +37,8 @@ export const reducer = (state=initialState, action) => {
             return {
                 ...state,
                 isDeleting: true,
-                characterChanged: action.payload
+                characterChanged: action.payload,
+                characters: state.characters.filter(c => c.id !== action.payload.id)
             }
         case 'DELETING_SMURF_SUCCESS':
             return {

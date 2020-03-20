@@ -7,15 +7,18 @@ import {getSmurfs} from '../actions'
 const Smurfs = props => {
     useEffect(() => {
         props.getSmurfs()
-    })
+    }, [])
+    console.log('Smurfs: ', props.characters);
     return (
         <div className='smurfs-grid'>
-            {/* {props.characters.map(smurf => {
-                return (
-                    <Smurf key={smurf.id} smurf={smurf} />
+            {props.isGetting && !props.characters && (
+                <h2 className='loading-text'>...Loading</h2>
+            )}
+            {!props.isGetting && props.characters && 
+                props.characters.map(smurf => 
+                    (<Smurf key={smurf.id} smurf={smurf} />)
                 )
-            })} */}
-            <h2> Smurfs here </h2>
+            }
         </div>
     )
 }

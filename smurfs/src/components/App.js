@@ -15,7 +15,7 @@ class App extends Component {
         <h1>SMURFS! 2.0 W/ Redux</h1>
         <div className='nav-link-container'>
           <Link className='nav-link' to='/addSmurf'>Add a Smurf</Link>
-          {/* <Link className='nav-link' to='/'>View All Smurfs</Link> */}
+          <Link className='nav-link' to='/'>View All Smurfs</Link>
         </div>
       </div>
       <Route exact path='/' component={Smurfs}></Route>

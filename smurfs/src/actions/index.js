@@ -24,6 +24,18 @@ export const addSmurf = smurf => {
     }
 }
 
+export const editSmurf = smurf => {
+    return dispatch => {
+        dispatch ({ type: 'EDITING_SMURF', payload: smurf})
+        axios.put(`http://localhost:3333/smurfs/${smurf.id}`, smurf)
+        .then(response => {
+            console.log(response)
+            dispatch({type: 'EDITING_SMURF_SUCCESS' })
+        })
+        .catch(err => console.log(err))
+    }
+}
+
 export const deleteSmurf = smurf => {
     return dispatch => {
         dispatch({ type: 'DELETING_SMURF', payload: smurf })

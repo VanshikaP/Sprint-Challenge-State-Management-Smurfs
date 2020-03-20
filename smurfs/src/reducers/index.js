@@ -1,9 +1,10 @@
 export const initialState = {
     isPosting: false,
     isGetting: false,
+    isEditing: false,
     isDeleting: false,
     characterChanged: null,
-    characters: null,
+    characters: [],
     error: ''
 }
 
@@ -32,6 +33,20 @@ export const reducer = (state=initialState, action) => {
                 ...state,
                 isGetting: false,
                 characters: action.payload
+            }
+        case 'EDITING_SMURF':
+            return {
+                ...state,
+                isEditing: true,
+                characterChanged: action.payload,
+                characters:[...state.characters.filter(c => 
+                    c.id !== action.payload.id
+                ), action.payload]
+            }
+        case 'EDITING_SMURF_SUCCESS':
+            return {
+                ...state,
+                isEditing: false
             }
         case 'DELETING_SMURF': 
             return {

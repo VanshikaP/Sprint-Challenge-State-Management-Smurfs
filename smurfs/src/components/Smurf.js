@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react'
+import {Link} from 'react-router-dom'
 import {useParams} from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import { getSmurfs, addSmurf, deleteSmurf } from '../actions'
+import { editSmurf, getSmurfs, deleteSmurf } from '../actions'
 
 const Smurf = props => {
     const { smurfId } = useParams();
@@ -12,18 +13,20 @@ const Smurf = props => {
 
     useEffect(() => {
         // const smurfId = id;
-        if(!props.characters) {
+        console.log('HELLO', props.characters.length === 0, props.characters)
+        if(props.characters.length === 0) {
             props.getSmurfs();
         } else {
             const smurf = props.characters.filter(c => c.id == smurfId)
             console.log('****', props.characters, smurf)
-            setCharacter(smurf[0])
+            smurf !== [] && setCharacter(smurf[0])
         }   
     }, [props.characters, smurfId])
 
     console.log('&&&', character);
 
     const [editing, setEditing] = useState(false)
+    const [deleted, setDeleted] = useState(false)
     const [name, setName] = useState('');
     const [height, setHeight] = useState('')
     const [age, setAge] = useState()
@@ -41,7 +44,7 @@ const Smurf = props => {
     }
 
     const handleEdit = e => {
-        e.preventDefault();
+        // e.preventDefault();
         setEditing(true);
         setName(character.name)
         setAge(character.age)
@@ -51,15 +54,17 @@ const Smurf = props => {
         console.log(name, age, height);
         e.preventDefault();
         setEditing(false)
-        props.addSmurf({
+        props.editSmurf({
             name: name,
             height: height,
-            age: age
+            age: age,
+            id: character.id
         })
     }
 
     const handleDelete = e => {
         e.preventDefault();
+        setDeleted(true);
         props.deleteSmurf(character);
     }
     return (
@@ -67,7 +72,7 @@ const Smurf = props => {
             {props.isPosting || props.isDeleting && (
                 <h2 className='loading-text'>...Loading</h2>
             )}
-            {!editing && !props.isPosting && !props.isDeleting &&(
+            {!editing && !props.isPosting && !deleted && character && !props.isDeleting &&(
                 <div className='smurf'>
                     <div className='smurf-info'>
                         <h3 className='smurf-name'> {character.name} </h3>
@@ -80,19 +85,41 @@ const Smurf = props => {
                     </div>
                 </div>
             )}
-            {editing && !props.isPosting && !props.isDeleting && (
+            {editing && !props.isPosting && !deleted && !props.isDeleting && (
                 <form className='add-smurf-form'>
+                    <div className='form-input'>
                     <label className='add-label' htmlFor='name'>Name: </label>
                     <input type='text' className='add-input' name='name' value={name} onChange={handleNameChange} />
-        
+                    <br />
+                    </div>
+                    <div className='form-input'>
                     <label className='add-label' htmlFor='age'>Age: </label>
                     <input type='text' className='add-input' name='age' value={age} onChange={handleAgeChange} />
-        
+                    <br />
+                    </div>
+                    <div className='form-input'>
                     <label className='add-label' htmlFor='name'>Height: </label>
                     <input type='text' className='add-input' name='height' value={height} onChange={handleHeightChange} />
-        
-                    <button className='add-submit btn' onClick={handleSubmit}>Add Smurf</button>
+                    <br />
+                    </div>
+                    <button className='add-submit btn' onClick={handleSubmit}>Edit Smurf</button>
                 </form>
+            )}
+            {deleted && (
+                <div className='success'>
+                    <h2> Smurf deleted successfully </h2>
+                    <div className='nav-link-container'>
+                        <Link className='nav-link' to='/'>Go Back</Link>
+                    </div>
+                </div>
+            )}
+            {!deleted && !character && (
+                <div className='success'>
+                <h2> Smurf not found </h2>
+                <div className='nav-link-container'>
+                    <Link className='nav-link' to='/'>Go Back</Link>
+                </div>
+            </div>
             )}
         </div>
     )
@@ -107,4 +134,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, {getSmurfs, addSmurf, deleteSmurf})(Smurf)
+export default connect(mapStateToProps, {getSmurfs, editSmurf, deleteSmurf})(Smurf)

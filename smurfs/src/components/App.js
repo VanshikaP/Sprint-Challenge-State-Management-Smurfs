@@ -12,10 +12,12 @@ class App extends Component {
     return (
       <BrowserRouter>
       <div className="App">
+        <div className='header'>
         <h1>SMURFS! 2.0 W/ Redux</h1>
         <div className='nav-link-container'>
           <Link className='nav-link' to='/addSmurf'>Add a Smurf</Link>
           <Link className='nav-link' to='/'>View All Smurfs</Link>
+        </div>
         </div>
       </div>
       <Route exact path='/' component={Smurfs}></Route>

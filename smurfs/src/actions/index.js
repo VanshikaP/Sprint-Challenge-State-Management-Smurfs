@@ -23,3 +23,15 @@ export const addSmurf = smurf => {
         .catch(err => console.log(err))
     }
 }
+
+export const deleteSmurf = smurf => {
+    return dispatch => {
+        dispatch({ type: 'DELETING_SMURF', payload: smurf })
+        axios.delete(`http://localhost:3333/smurfs/${smurf.id}`)
+        .then(response => {
+            console.log(response)
+            dispatch({ type: 'DELETING_SMURF_SUCCESS'})
+        })
+        .catch(err => console.log(err))
+    }
+}

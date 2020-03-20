@@ -20,9 +20,9 @@ class App extends Component {
       </div>
       <Route exact path='/' component={Smurfs}></Route>
       <Route exact path='/addSmurf' component={AddSmurfForm}></Route>
-      {/* <Route exact path='/:id'>
+      <Route exact path='/smurfs/:smurfId'>
         <Smurf />
-      </Route> */}
+      </Route>
       </BrowserRouter>
     );
   }

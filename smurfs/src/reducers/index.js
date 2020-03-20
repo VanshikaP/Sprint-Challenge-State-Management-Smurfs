@@ -1,7 +1,7 @@
 export const initialState = {
     isPosting: false,
     isGetting: false,
-    isEditing: false,
+    isDeleting: false,
     characterChanged: null,
     characters: null,
     error: ''
@@ -13,7 +13,6 @@ export const reducer = (state=initialState, action) => {
             return {
                 ...state,
                 isPosting: true,
-                isEditing: false,
                 characterChanged: action.payload
             }
         case 'POSTING_SMURF_SUCCESS':
@@ -33,10 +32,16 @@ export const reducer = (state=initialState, action) => {
                 isGetting: false,
                 characters: action.payload
             }
-        case 'EDITING_SMURF': 
+        case 'DELETING_SMURF': 
             return {
                 ...state,
-                isEditing: true
+                isDeleting: true,
+                characterChanged: action.payload
+            }
+        case 'DELETING_SMURF_SUCCESS':
+            return {
+                ...state,
+                isDeleting: false
             }
         default:
             return state;
